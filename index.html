@@ -116,34 +116,41 @@
         </section>
     </div>
     
-    <!-- Load Confetti / Bubble JS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Load Confetti / Bubble JS Library (Ensure this is still present) -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        var duration = 4.5 * 1000; // Plays for 4.5 seconds
-        var animationEnd = Date.now() + duration;
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // 1. Extend duration slightly so the bubbles have time to float all the way up.
+    var duration = 6 * 1000; // Plays for 6 seconds
+    var animationEnd = Date.now() + duration;
 
-        var interval = setInterval(function() {
-          var timeLeft = animationEnd - Date.now();
+    // 2. We use a faster interval to keep the screen full.
+    var interval = setInterval(function() {
+      var timeLeft = animationEnd - Date.now();
 
-          if (timeLeft <= 0) {
-            return clearInterval(interval);
-          }
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
 
-          // Dramatic Champagne Burst - Multiple bubbles launching upward at once
-          confetti({
-            particleCount: 8, // Higher density per tick
-            startVelocity: Math.random() * 25 + 15, // Fast upward velocity
-            ticks: 250,
-            gravity: -0.4, // Stronger upward lift
-            drift: Math.random() * 0.4 - 0.2, // Subtle side-to-side sway
-            origin: { x: Math.random(), y: 1.1 }, // Spawns right below the screen bottom
-            colors: ['#ffffff', '#fff8dc', '#f4e04d', '#ffd700', '#e6c619'], // Bright whites, gold, champagne
-            shapes: ['circle'],
-            scalar: Math.random() * 1.2 + 0.6, // Larger, more noticeable bubble sizes
-            zIndex: 9999
-          });
-        }, 50); // Faster trigger rate
+      // We maintain a steady, high particle count so the screen is always filled.
+      // (This is the change that prevents them from thinning out too early.)
+      var steadyParticleCount = 10; 
+
+      // Launch floating champagne bubbles upward from the bottom
+      confetti({
+        particleCount: steadyParticleCount, // Steady flow to fill the screen
+        startVelocity: Math.random() * 20 + 10, // Faster launch
+        // 3. 'ticks' must be high enough so the bubbles don't disappear on tall screens.
+        ticks: 500, // HIGH TICKS ensures they reach the very top.
+        gravity: -0.25, // Stronger negative gravity floats them UP faster.
+        origin: { x: Math.random(), y: 1.1 }, // Spawn along the bottom edge, slightly off-screen
+        colors: ['#ffffff', '#f4e04d', '#ffd700', '#fceabb'], // White, Gold, and Champagne tones
+        shapes: ['circle'],
+        // 4. Large scalar range makes bubbles clearly visible at the top.
+        scalar: Math.random() * 1.5 + 0.5, // Random large bubble sizes
+        zIndex: 9999
       });
-    </script>
+    }, 70); // Slightly faster launch rate
+  });
+</script>
