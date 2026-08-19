@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridal Party Info; password needed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f7f5f0; color: #1a2b4c; text-align: center; padding: 40px 15px; }
+        .container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .info-card { width: 100%; background-color: #ffffff; padding: 30px 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(26, 43, 76, 0.08); margin-bottom: 25px; text-align: left; }
+        h1 { font-size: 1.6rem; margin-bottom: 15px; text-align: center; color: #1a2b4c; }
+        .welcome-box { background-color: #fcfbf7; padding: 18px; border-left: 4px solid #1a2b4c; border-radius: 4px; font-size: 0.92rem; line-height: 1.6; color: #444; margin-bottom: 25px; }
+        .section-title { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a2b4c; margin-bottom: 15px; }
+        
+        /* Timeline Styles */
+        .timeline { list-style: none; padding: 0; margin-bottom: 25px; }
+        .timeline-item { background-color: #f7f5f0; padding: 15px 18px; border-radius: 10px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+        .timeline-date { font-size: 0.8rem; font-weight: 700; color: #8c7355; text-transform: uppercase; letter-spacing: 0.5px; }
+        .timeline-event { font-size: 1.05rem; font-weight: 700; color: #1a2b4c; }
+        
+        /* Poll Form Styles */
+        .name-input-group { margin-bottom: 20px; }
+        .name-input-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #1a2b4c; text-transform: uppercase; }
+        .name-input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; font-family: inherit; }
+        .poll-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .poll-item { background: #fcfbf7; border: 1px solid #e2ded4; border-radius: 8px; padding: 12px 15px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+        .poll-checkbox-label { font-size: 0.95rem; font-weight: 600; color: #1a2b4c; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .voters-list { font-size: 0.8rem; color: #8c7355; padding-left: 28px; }
+        .btn-submit { width: 100%; background-color: #1a2b4c; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
+        .btn-back { display: inline-block; background-color: #1a2b4c; color: #ffffff; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
+        .note-text { font-size: 0.88rem; line-height: 1.6; color: #555; font-style: italic; text-align: center; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="info-card">
+            <h1>Ciao! </h1>
+
+            <div class="welcome-box">
+                We are so excited to spend the week with you in Italy! We have a few ideas about what can be done and when it can be done, but nothing has been finalised. This is our initial proposal. 
+            </div>
+
+            <div class="section-title">Proposed Pre-Wedding Timeline</div>
+
+            <ul class="timeline">
+                <li class="timeline-item">
+                    <span class="timeline-date">Monday, Oct. 11</span>
+                    <span class="timeline-event">Lucca City</span>
+                </li>
+                <li class="timeline-item">
+                    <span class="timeline-date">Tuesday, Oct. 12</span>
+                    <span class="timeline-event">Pisa & Wine Tasting</span>
+                </li>
+                <li class="timeline-item">
+                    <span class="timeline-date">Wednesday, Oct. 13</span>
+                    <span class="timeline-event">Florence Day Trip</span>
+                </li>
+            </ul>
+
+            <div class="note-text">
+                Again, this is all malleable, but just to provide you with an idea. The prices and times can be discussed and updated once we have more information regarding your interests, so that you can make your decisions about joining or venturing off.<br><br>
+                We also want to add that we are happy to do a grocery run to grab snacks, staples and beverages for the villa prior to your arrival. We can start by pooling 30$-50$ from all of us and go from there. (Nothing needs to be sent any time soon!). At the bottom of the page there is an amendable grocery list. Please feel free to add your desired items at any point!
+ 		     In the mean time, please make note of the ideas that you like. And as always, there is no pressure to partake in any! There is a lot to see while in Italy and we want you to explore what your heart desires!
+            </div>
+
+            <div class="section-title">Vote on Excursion Ideas</div>
+
+            <!-- Poll Form -->
+            <form id="pollForm" onsubmit="submitVote(event)">
+                <div class="name-input-group">
+                    <label for="guestName">Your Name</label>
+                    <input type="text" id="guestName" placeholder="Enter your name" required>
+                </div>
+
+                <div class="poll-options" id="pollOptions">
+                    <!-- Dynamic rendering via JavaScript -->
+                </div>
+
+                <button type="submit" class="btn-submit">Submit My Choices</button>
+            </form>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Main Page</a>
+
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://bridal-party-poll-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const ideas = [
+            "Wine tasting",
+            "Pisa sightseeing",
+            "Lucca sightseeing",
+            "Florence day trip",
+            "Florence outlet mall",
+            "Sienna sightseeing",
+            "Beach time",
+            "Pasta making class",
+            "Hiking"
+        ];
+
+        // Listen for live updates from Firebase
+        database.ref('votes').on('value', (snapshot) => {
+            const votesData = snapshot.val() || {};
+            renderPoll(votesData);
+        });
+
+        function renderPoll(votesData) {
+            const container = document.getElementById('pollOptions');
+            
+            // Preserve current checkbox states while re-rendering live votes
+            const currentChecks = {};
+            ideas.forEach((_, index) => {
+                const el = document.getElementById(`idea-${index}`);
+                if (el) currentChecks[index] = el.checked;
+            });
+
+            container.innerHTML = '';
+
+            ideas.forEach((idea, index) => {
+                const voters = [];
+                for (let user in votesData) {
+                    if (votesData[user][index]) {
+                        voters.push(user);
+                    }
+                }
+
+                const votersText = voters.length > 0 ? `Interested: ${voters.join(', ')}` : 'No votes yet';
+                const isChecked = currentChecks[index] ? 'checked' : '';
+
+                container.innerHTML += `
+                    <div class="poll-item">
+                        <label class="poll-checkbox-label">
+                            <input type="checkbox" id="idea-${index}" value="${idea}" ${isChecked}>
+                            ${idea}
+                        </label>
+                        <div class="voters-list">${votersText}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function submitVote(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('guestName').value.trim();
+            if (!nameInput) return alert('Please enter your name.');
+
+            const userVotes = {};
+            ideas.forEach((idea, index) => {
+                const isChecked = document.getElementById(`idea-${index}`).checked;
+                userVotes[index] = isChecked;
+            });
+
+            // Sanitize key name for Firebase rules
+            const sanitizedName = nameInput.replace(/[.#$/\[\]]/g, "_");
+
+            database.ref('votes/' + sanitizedName).set(userVotes, (error) => {
+                if (error) {
+                    alert('Error saving vote. Please make sure your Firebase Realtime Database rules are set to public/test mode.');
+                } else {
+                    alert('Thanks ' + nameInput + '! Your choices have been saved.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
