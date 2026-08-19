@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f5f0;
+            color: #1a2b4c;
+            text-align: center;
+            line-height: 1.6;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Card Container */
+        .form-card {
+            background-color: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(26, 43, 76, 0.08);
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #1a2b4c;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label.section-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            color: #1a2b4c;
+        }
+
+        /* Text Input Styling */
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: #2c3e50;
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #1a2b4c;
+            background-color: #ffffff;
+        }
+
+        /* Custom Checkbox Layout */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: #1a2b4c;
+            cursor: pointer;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(26, 43, 76, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Back Button */
+        .btn-back {
+            display: inline-block;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            box-shadow: 0 4px 14px rgba(26, 43, 76, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="form-card">
+            <h1>RSVP</h1>
+
+            <!-- Replace "YOUR_FORMSPREE_ID" in the action attribute below -->
+            <form action="https://formspree.io/f/mqpzgoqp" method="POST">
+                
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label class="section-label" for="names">Name(s) of Guest(s):</label>
+                    <input type="text" id="names" name="Guest Names" placeholder="e.g. Jane and John Doe" required>
+                </div>
+
+                <!-- Events Checkboxes -->
+                <div class="form-group">
+                    <label class="section-label">Select Events Attending:</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="Events Attending" value="Thursday Oct 14 - Rehearsal Lunch">
+                            Thursday Oct 14, Rehearsal Lunch
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="Events Attending" value="Friday Oct 15 - Wedding Day">
+                            Friday Oct 15, Wedding Day
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="Events Attending" value="Saturday Oct 16 - Recovery Brunch">
+                            Saturday Oct 16, Recovery Brunch
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="Unable to attend" value="I'll be there in spirit">
+                            I’ll be there in spirit
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Short Message (Max 500 Words Approx ~3000 chars) -->
+                <div class="form-group">
+                    <label class="section-label" for="message">Leave us a message:</label>
+                    <textarea id="message" name="Message" rows="5" maxlength="3000" placeholder="Write a short note for the couple... (Max 500 words)"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit">Send RSVP</button>
+
+            </form>
+        </div>
+
+        <!-- Back Link -->
+        <div>
+            <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
+        </div>
+
+<!-- Image under RSVP form -->
+<div class="image-card">
+    <img src="images/alison-and-brian-monogram.png" alt="Alison and Brian monogram with calla lilies">
+</div>
+
+
+    </div>
+</body>
+</html>
