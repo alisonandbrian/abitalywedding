@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridal Party VIP - Alison & Brian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f5f0;
+            color: #1a2b4c;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .container { max-width: 400px; margin: 0 auto; }
+        .card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(26, 43, 76, 0.08);
+        }
+        h2 { font-size: 1.5rem; color: #1a2b4c; margin-bottom: 8px; }
+        p.subtext { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            font-family: inherit;
+        }
+        input:focus { border-color: #1a2b4c; }
+        button {
+            width: 100%;
+            background-color: #1a2b4c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        #error-msg {
+            color: #d9534f;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none;
+            font-weight: 500;
+        }
+        .btn-back {
+            display: inline-block;
+            color: #1a2b4c;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h2>Bridal Party VIP 🥂</h2>
+            <p class="subtext">Enter the secret passcode to access VIP details.</p>
+            
+            <input type="password" id="passcode" placeholder="Enter Passcode">
+            <button onclick="checkPasscode()">Unlock VIP Area</button>
+            
+            <p id="error-msg">Incorrect passcode! Please try again.</p>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Main Page</a>
+    </div>
+
+    <script>
+        function checkPasscode() {
+            var secret = "ITALY2027"; 
+            var input = document.getElementById("passcode").value;
+
+            if (input.toUpperCase().trim() === secret) {
+                // Remembers authorization for this session
+                sessionStorage.setItem("vip_unlocked", "true");
+                
+                // Redirects directly to bridal-party-poll.html
+                window.location.href = "bridal-party-poll.html";
+            } else {
+                document.getElementById("error-msg").style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
