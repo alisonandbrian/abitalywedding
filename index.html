@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alison &amp; Brian - Wedding</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f5f0;
+            color: #1a2b4c;
+            text-align: center;
+            line-height: 1.6;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-card {
+            background-color: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(26, 43, 76, 0.08);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #1a2b4c;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        p.intro-text {
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* Navigation Links Section */
+        .navigation-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 30px auto 0 auto;
+        }
+
+        .btn {
+            display: block;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            padding: 14px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            box-shadow: 0 4px 14px rgba(26, 43, 76, 0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: #3b5278;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Main Announcement Section -->
+        <section class="announcement">
+            <h1 class="tagline">“Kickstarting a marriage is grounds for celebration!”</h1>
+            
+            <div class="image-card">
+                <img src="images/Openingimage.png" alt="We are getting married illustration" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 20px auto;">
+            </div>
+        </section>
+
+        <!-- Schedule / Itinerary Section -->
+        <section class="schedule-section">
+            <div class="image-card">
+                <img src="images/wedding-schedule.png" alt="Wedding schedule of events - Oct 14 to Oct 16, 2027" style="max-width: 100%; width: 500px; height: auto; display: block; margin: 20px auto;">
+            </div>
+        </section>
+
+        <!-- Main Navigation & Links Section -->
+        <section class="navigation-links">
+            <a href="location-info.html" class="btn">General Inquiries About Location / Stay</a>
+            <a href="dress-code.html" class="btn">View Dress Code &amp; Attire Inspiration</a>
+            <a href="food-and-drinks.html" class="btn">Food &amp; Drinks Info</a>
+            <a href="gifts.html" class="btn">Gifts &amp; Registry</a>
+            <a href="rsvp.html" class="btn btn-primary">RSVP Here</a>
+        </section>
+    </div>
+
+    <!-- Load Firework JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        // Firework sequence runs EVERY time page loads
+        var duration = 3 * 1000; // 3 seconds
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+          var timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          var particleCount = 50 * (timeLeft / duration);
+          // Launch fireworks from both sides of the screen
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+      });
+    </script>
+</body>
+</html>
