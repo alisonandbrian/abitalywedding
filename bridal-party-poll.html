@@ -72,17 +72,26 @@
 
             <div class="section-title">Vote on Excursion Ideas</div>
 
-                    <!-- Excursion Poll Section -->
+        <!-- Excursion Poll Section -->
         <form id="pollForm" onsubmit="submitVote(event)">
             <div class="name-input-group" style="margin-bottom: 20px;">
                 <label for="guestName" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #1a2b4c; text-transform: uppercase;">Your Name</label>
                 <input type="text" id="guestName" placeholder="Enter your full name" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; font-family: inherit;">
             </div>
 
-            <!-- Checkboxes Container -->
+            <!-- Checkboxes & Progress Bars Container -->
             <div class="poll-options" id="pollOptions"></div>
 
-            <button type="submit" class="btn-submit" style="width: 100%; background-color: #1a2b4c; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 15px;">Submit My Choices</button>
+            <!-- Suggestion Input Line -->
+            <div style="margin-top: 15px; margin-bottom: 20px;">
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #1a2b4c; margin-bottom: 5px; text-transform: uppercase;">Have another idea?</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="customIdeaInput" placeholder="Add a new excursion suggestion..." style="flex: 1; padding: 10px 12px; border: 1px dashed #1a2b4c; border-radius: 8px; font-size: 0.9rem; font-family: inherit;">
+                    <button type="button" onclick="addCustomIdea()" style="background-color: #8c7355; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; text-transform: uppercase;">Add Idea</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" style="width: 100%; background-color: #1a2b4c; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;">Submit My Choices</button>
         </form>
 
         <hr style="border: 0; border-top: 1px dashed #c0b7a6; margin: 35px 0;">
@@ -112,14 +121,13 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
 <script>
-    // Connected Firebase Realtime Database Config
     const firebaseConfig = {
         databaseURL: "https://bridal-party-poll-default-rtdb.firebaseio.com/"
     };
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    const ideas = [
+    const defaultIdeas = [
         "Wine Tasting",
         "Pisa Sightseeing",
         "Lucca Sightseeing",
@@ -131,24 +139,37 @@
         "Small Hike"
     ];
 
-    // Fetch live excursion votes from Firebase
-    database.ref('votes').on('value', (snapshot) => {
-        const votesData = snapshot.val() || {};
-        renderPoll(votesData);
-    });
+    let currentIdeas = [...defaultIdeas];
 
-    // Fetch live grocery list items from Firebase
-    database.ref('groceries').on('value', (snapshot) => {
-        const groceryData = snapshot.val() || {};
+    // Fetch custom ideas, votes, and groceries live from Firebase
+    database.ref().on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        const customIdeasData = data.customIdeas || {};
+        const votesData = data.votes || {};
+        const groceryData = data.groceries || {};
+
+        // Combine default ideas with user suggestions
+        currentIdeas = [...defaultIdeas];
+        for (let key in customIdeasData) {
+            if (!currentIdeas.includes(customIdeasData[key])) {
+                currentIdeas.push(customIdeasData[key]);
+            }
+        }
+
+        renderPoll(votesData);
         renderGroceries(groceryData);
     });
 
     function renderPoll(votesData) {
         const container = document.getElementById('pollOptions');
         if (!container) return;
+
+        // Calculate total voters to determine percentage for progress bar length
+        const totalVotersCount = Object.keys(votesData).length || 1;
+
         container.innerHTML = '';
 
-        ideas.forEach((idea, index) => {
+        currentIdeas.forEach((idea, index) => {
             const voters = [];
             for (let user in votesData) {
                 if (votesData[user][index]) {
@@ -156,17 +177,27 @@
                 }
             }
 
-            const votersText = voters.length > 0 
-                ? `<strong>Interested:</strong> ${voters.join(', ')}` 
+            const voteCount = voters.length;
+            // Bar width percentage grows relative to votes (max 100%)
+            const barWidth = Math.min(Math.round((voteCount / totalVotersCount) * 100), 100);
+
+            const votersText = voteCount > 0 
+                ? `<strong>Liked by (${voteCount}):</strong> ${voters.join(', ')}` 
                 : 'No votes yet';
 
             container.innerHTML += `
-                <div class="poll-item" style="background: #fcfbf7; border: 1px solid #e2ded4; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; text-align: left;">
-                    <label style="font-size: 0.95rem; font-weight: 600; color: #1a2b4c; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <div class="poll-item" style="background: #fcfbf7; border: 1px solid #e2ded4; border-radius: 8px; padding: 12px 15px; margin-bottom: 12px; text-align: left;">
+                    <label style="font-size: 0.95rem; font-weight: 600; color: #1a2b4c; display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 8px;">
                         <input type="checkbox" id="idea-${index}" value="${idea}">
                         ${idea}
                     </label>
-                    <div style="font-size: 0.8rem; color: #8c7355; padding-left: 24px; margin-top: 4px;">
+
+                    <!-- Growing Progress Bar -->
+                    <div style="width: 100%; background-color: #e2ded4; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+                        <div style="width: ${voteCount > 0 ? barWidth : 0}%; background-color: #1a2b4c; height: 100%; transition: width 0.4s ease;"></div>
+                    </div>
+
+                    <div style="font-size: 0.8rem; color: #8c7355;">
                         ${votersText}
                     </div>
                 </div>
@@ -201,9 +232,11 @@
         if (!nameInput) return alert('Please enter your name.');
 
         const userVotes = {};
-        ideas.forEach((idea, index) => {
-            const isChecked = document.getElementById(`idea-${index}`).checked;
-            userVotes[index] = isChecked;
+        currentIdeas.forEach((idea, index) => {
+            const checkbox = document.getElementById(`idea-${index}`);
+            if (checkbox) {
+                userVotes[index] = checkbox.checked;
+            }
         });
 
         const sanitizedName = nameInput.replace(/[.#$/\[\]]/g, "_");
@@ -213,6 +246,20 @@
                 alert('Error saving vote: Check Firebase permissions.');
             } else {
                 alert('Thanks ' + nameInput + '! Your choices have been recorded.');
+            }
+        });
+    }
+
+    function addCustomIdea() {
+        const customInput = document.getElementById('customIdeaInput');
+        const ideaText = customInput.value.trim();
+        if (!ideaText) return;
+
+        database.ref('customIdeas').push(ideaText, (error) => {
+            if (error) {
+                alert('Error adding suggestion.');
+            } else {
+                customInput.value = '';
             }
         });
     }
