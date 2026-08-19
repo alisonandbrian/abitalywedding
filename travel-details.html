@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel & Accommodation Details - Alison & Brian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f5f0;
+            color: #1a2b4c;
+            text-align: center;
+            padding: 40px 15px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(26, 43, 76, 0.08);
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #1a2b4c;
+        }
+
+        p.subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #3b5278;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1>Travel & Stay Details</h1>
+            <p class="subtitle">Please share your flight & accommodation info so we can help coordinate!</p>
+
+            <!-- REPLACE THE 'action' URL BELOW WITH YOUR FORMSPREE FORM LINK -->
+            <form action=“https://formspree.io/f/mqpzgoqp" method="POST">
+                
+                <div class="form-group">
+                    <label for="names">Guest Name(s)</label>
+                    <input type="text" id="names" name="Guest Names" placeholder="e.g. Jane & John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="Email" placeholder="your@email.com" required>
+                </div>
+
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+
+                <!-- FLIGHT INFORMATION -->
+                <div class="form-group">
+                    <label for="arrival-date">Arrival Date & Time</label>
+                    <input type="text" id="arrival-date" name="Arrival Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)">
+                </div>
+
+                <div class="form-group">
+                    <label for="flight-num">Arrival Flight # / Airline</label>
+                    <input type="text" id="flight-num" name="Flight Number" placeholder="e.g. Delta DL123">
+                </div>
+
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+
+                <!-- ACCOMMODATION INFORMATION -->
+                <div class="form-group">
+                    <label for="stay-location">Where are you staying?</label>
+                    <input type="text" id="stay-location" name="Accommodation" placeholder="e.g. Villa Lenka, Albergo Villa Marta, Airbnb in Lucca">
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Additional Notes / Departure Details</label>
+                    <textarea id="notes" name="Notes" rows="4" placeholder="Let us know if you need help sharing a taxi, departure flight details, or anything else!"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Details</button>
+            </form>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Main Page</a>
+    </div>
+
+</body>
+</html>
