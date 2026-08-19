@@ -172,6 +172,43 @@
                     alert('Thanks ' + nameInput + '! Your choices have been saved.');
                 }
             });
+                    // Listen for live Grocery List updates from Firebase
+        database.ref('groceries').on('value', (snapshot) => {
+            const groceriesData = snapshot.val() || {};
+            const listContainer = document.getElementById('groceryList');
+            listContainer.innerHTML = '';
+
+            for (let id in groceriesData) {
+                const item = groceriesData[id];
+                listContainer.innerHTML += `
+                    <li style="background: #fcfbf7; border: 1px solid #e2ded4; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #1a2b4c;">${item.item}</span>
+                        <span style="font-size: 0.78rem; color: #8c7355;">Requested by ${item.name}</span>
+                    </li>
+                `;
+            }
+        });
+
+        // Add a new item to Firebase
+        function addGroceryItem(e) {
+            e.preventDefault();
+            const name = document.getElementById('groceryName').value.trim();
+            const item = document.getElementById('groceryItem').value.trim();
+
+            if (!name || !item) return;
+
+            database.ref('groceries').push({
+                name: name,
+                item: item
+            }, (error) => {
+                if (error) {
+                    alert('Error saving item.');
+                } else {
+                    document.getElementById('groceryItem').value = '';
+                }
+            });
+        }
+
         }
     </script>
 </body>
