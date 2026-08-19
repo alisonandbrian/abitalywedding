@@ -72,144 +72,175 @@
 
             <div class="section-title">Vote on Excursion Ideas</div>
 
-            <!-- Poll Form -->
-            <form id="pollForm" onsubmit="submitVote(event)">
-                <div class="name-input-group">
-                    <label for="guestName">Your Name</label>
-                    <input type="text" id="guestName" placeholder="Enter your name" required>
-                </div>
+                    <!-- Excursion Poll Section -->
+        <form id="pollForm" onsubmit="submitVote(event)">
+            <div class="name-input-group" style="margin-bottom: 20px;">
+                <label for="guestName" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #1a2b4c; text-transform: uppercase;">Your Name</label>
+                <input type="text" id="guestName" placeholder="Enter your full name" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; font-family: inherit;">
+            </div>
 
-                <div class="poll-options" id="pollOptions">
-                    <!-- Dynamic rendering via JavaScript -->
-                </div>
+            <!-- Checkboxes Container -->
+            <div class="poll-options" id="pollOptions"></div>
 
-                <button type="submit" class="btn-submit">Submit My Choices</button>
-            </form>
-        </div>
+            <button type="submit" class="btn-submit" style="width: 100%; background-color: #1a2b4c; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 15px;">Submit My Choices</button>
+        </form>
 
-        <a href="index.html" class="btn-back">← Back to Main Page</a>
+        <hr style="border: 0; border-top: 1px dashed #c0b7a6; margin: 35px 0;">
 
+        <!-- Villa Grocery Wishlist Section -->
+        <div class="section-title">Villa Grocery Wishlist 🛒</div>
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">
+            Add snacks, staples, or drinks you'd like us to stock at the villa prior to your arrival!
+        </p>
+
+        <form id="groceryForm" onsubmit="addGroceryItem(event)" style="display: flex; gap: 8px; margin-bottom: 20px;">
+            <input type="text" id="groceryInput" placeholder="e.g. Prosecco, Espresso, Olives" required style="flex: 1; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; font-family: inherit;">
+            <button type="submit" style="background-color: #1a2b4c; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; text-transform: uppercase;">Add Item</button>
+        </form>
+
+        <ul id="groceryList" style="list-style: none; padding: 10px 15px; background: #fcfbf7; border: 1px solid #e2ded4; border-radius: 8px;">
+            <!-- Live grocery items render here -->
+        </ul>
     </div>
 
-    <script>
-        const firebaseConfig = {
-            databaseURL: "https://bridal-party-poll-default-rtdb.firebaseio.com/"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+    <a href="index.html" class="btn-back">← Back to Main Page</a>
 
-        const ideas = [
-            "Wine tasting",
-            "Pisa sightseeing",
-            "Lucca sightseeing",
-            "Florence day trip",
-            "Florence outlet mall",
-            "Sienna sightseeing",
-            "Beach time",
-            "Pasta making class",
-            "Hiking"
-        ];
+</div>
 
-        // Listen for live updates from Firebase
-        database.ref('votes').on('value', (snapshot) => {
-            const votesData = snapshot.val() || {};
-            renderPoll(votesData);
-        });
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-        function renderPoll(votesData) {
-            const container = document.getElementById('pollOptions');
-            
-            // Preserve current checkbox states while re-rendering live votes
-            const currentChecks = {};
-            ideas.forEach((_, index) => {
-                const el = document.getElementById(`idea-${index}`);
-                if (el) currentChecks[index] = el.checked;
-            });
+<script>
+    // Connected Firebase Realtime Database Config
+    const firebaseConfig = {
+        databaseURL: "https://bridal-party-poll-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-            container.innerHTML = '';
+    const ideas = [
+        "Wine Tasting",
+        "Pisa Sightseeing",
+        "Lucca Sightseeing",
+        "Florence Day Trip",
+        "Florence Outlet Mall",
+        "Sienna Sightseeing",
+        "Beach Time",
+        "Pasta Making Class",
+        "Small Hike"
+    ];
 
-            ideas.forEach((idea, index) => {
-                const voters = [];
-                for (let user in votesData) {
-                    if (votesData[user][index]) {
-                        voters.push(user);
-                    }
+    // Fetch live excursion votes from Firebase
+    database.ref('votes').on('value', (snapshot) => {
+        const votesData = snapshot.val() || {};
+        renderPoll(votesData);
+    });
+
+    // Fetch live grocery list items from Firebase
+    database.ref('groceries').on('value', (snapshot) => {
+        const groceryData = snapshot.val() || {};
+        renderGroceries(groceryData);
+    });
+
+    function renderPoll(votesData) {
+        const container = document.getElementById('pollOptions');
+        if (!container) return;
+        container.innerHTML = '';
+
+        ideas.forEach((idea, index) => {
+            const voters = [];
+            for (let user in votesData) {
+                if (votesData[user][index]) {
+                    voters.push(user.replace(/_/g, " "));
                 }
+            }
 
-                const votersText = voters.length > 0 ? `Interested: ${voters.join(', ')}` : 'No votes yet';
-                const isChecked = currentChecks[index] ? 'checked' : '';
+            const votersText = voters.length > 0 
+                ? `<strong>Interested:</strong> ${voters.join(', ')}` 
+                : 'No votes yet';
 
-                container.innerHTML += `
-                    <div class="poll-item">
-                        <label class="poll-checkbox-label">
-                            <input type="checkbox" id="idea-${index}" value="${idea}" ${isChecked}>
-                            ${idea}
-                        </label>
-                        <div class="voters-list">${votersText}</div>
+            container.innerHTML += `
+                <div class="poll-item" style="background: #fcfbf7; border: 1px solid #e2ded4; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; text-align: left;">
+                    <label style="font-size: 0.95rem; font-weight: 600; color: #1a2b4c; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="idea-${index}" value="${idea}">
+                        ${idea}
+                    </label>
+                    <div style="font-size: 0.8rem; color: #8c7355; padding-left: 24px; margin-top: 4px;">
+                        ${votersText}
                     </div>
-                `;
-            });
+                </div>
+            `;
+        });
+    }
+
+    function renderGroceries(groceryData) {
+        const listContainer = document.getElementById('groceryList');
+        if (!listContainer) return;
+        listContainer.innerHTML = '';
+
+        const keys = Object.keys(groceryData);
+        if (keys.length === 0) {
+            listContainer.innerHTML = '<li style="font-size: 0.85rem; color: #888; text-align: center; padding: 5px 0;">No grocery items requested yet!</li>';
+            return;
         }
 
-        function submitVote(e) {
-            e.preventDefault();
-            const nameInput = document.getElementById('guestName').value.trim();
-            if (!nameInput) return alert('Please enter your name.');
+        keys.forEach((key) => {
+            const item = groceryData[key];
+            listContainer.innerHTML += `
+                <li style="font-size: 0.9rem; color: #1a2b4c; padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+                    <span>🛒 <strong>${item.name}</strong> <small style="color: #8c7355; font-size: 0.75rem;">(added by ${item.addedBy})</small></span>
+                </li>
+            `;
+        });
+    }
 
-            const userVotes = {};
-            ideas.forEach((idea, index) => {
-                const isChecked = document.getElementById(`idea-${index}`).checked;
-                userVotes[index] = isChecked;
-            });
+    function submitVote(e) {
+        e.preventDefault();
+        const nameInput = document.getElementById('guestName').value.trim();
+        if (!nameInput) return alert('Please enter your name.');
 
-            // Sanitize key name for Firebase rules
-            const sanitizedName = nameInput.replace(/[.#$/\[\]]/g, "_");
+        const userVotes = {};
+        ideas.forEach((idea, index) => {
+            const isChecked = document.getElementById(`idea-${index}`).checked;
+            userVotes[index] = isChecked;
+        });
 
-            database.ref('votes/' + sanitizedName).set(userVotes, (error) => {
-                if (error) {
-                    alert('Error saving vote. Please make sure your Firebase Realtime Database rules are set to public/test mode.');
-                } else {
-                    alert('Thanks ' + nameInput + '! Your choices have been saved.');
-                }
-            });
-                    // Listen for live Grocery List updates from Firebase
-        database.ref('groceries').on('value', (snapshot) => {
-            const groceriesData = snapshot.val() || {};
-            const listContainer = document.getElementById('groceryList');
-            listContainer.innerHTML = '';
+        const sanitizedName = nameInput.replace(/[.#$/\[\]]/g, "_");
 
-            for (let id in groceriesData) {
-                const item = groceriesData[id];
-                listContainer.innerHTML += `
-                    <li style="background: #fcfbf7; border: 1px solid #e2ded4; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 600; color: #1a2b4c;">${item.item}</span>
-                        <span style="font-size: 0.78rem; color: #8c7355;">Requested by ${item.name}</span>
-                    </li>
-                `;
+        database.ref('votes/' + sanitizedName).set(userVotes, (error) => {
+            if (error) {
+                alert('Error saving vote: Check Firebase permissions.');
+            } else {
+                alert('Thanks ' + nameInput + '! Your choices have been recorded.');
             }
         });
+    }
 
-        // Add a new item to Firebase
-        function addGroceryItem(e) {
-            e.preventDefault();
-            const name = document.getElementById('groceryName').value.trim();
-            const item = document.getElementById('groceryItem').value.trim();
+    function addGroceryItem(e) {
+        e.preventDefault();
+        const itemInput = document.getElementById('groceryInput');
+        const nameInput = document.getElementById('guestName').value.trim();
 
-            if (!name || !item) return;
-
-            database.ref('groceries').push({
-                name: name,
-                item: item
-            }, (error) => {
-                if (error) {
-                    alert('Error saving item.');
-                } else {
-                    document.getElementById('groceryItem').value = '';
-                }
-            });
+        if (!nameInput) {
+            alert('Please type your name in the "YOUR NAME" box above before adding grocery items!');
+            return;
         }
 
-        }
-    </script>
+        const itemName = itemInput.value.trim();
+        if (!itemName) return;
+
+        database.ref('groceries').push({
+            name: itemName,
+            addedBy: nameInput
+        }, (error) => {
+            if (error) {
+                alert('Error adding item. Try again!');
+            } else {
+                itemInput.value = '';
+            }
+        });
+    }
+</script>
 </body>
 </html>
