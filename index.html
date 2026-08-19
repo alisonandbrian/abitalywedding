@@ -115,13 +115,13 @@
             <a href="rsvp.html" class="btn btn-primary">RSVP Here</a>
         </section>
     </div>
-
-      <!-- Load Confetti / Bubble JS Library -->
+    
+    <!-- Load Confetti / Bubble JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
       window.addEventListener('DOMContentLoaded', () => {
-        var duration = 4 * 1000; // Plays for 4 seconds
+        var duration = 4.5 * 1000; // Plays for 4.5 seconds
         var animationEnd = Date.now() + duration;
 
         var interval = setInterval(function() {
@@ -131,18 +131,19 @@
             return clearInterval(interval);
           }
 
-          // Launch floating champagne bubbles upward from the bottom
+          // Dramatic Champagne Burst - Multiple bubbles launching upward at once
           confetti({
-            particleCount: 3,
-            startVelocity: 15,
-            ticks: 200,
-            gravity: -0.3, // Negative gravity makes them float UP
-            origin: { x: Math.random(), y: 1.0 }, // Spawns along the bottom edge
-            colors: ['#ffffff', '#f4e04d', '#ffd700', '#fceabb'], // White, Gold, and Champagne tones
+            particleCount: 8, // Higher density per tick
+            startVelocity: Math.random() * 25 + 15, // Fast upward velocity
+            ticks: 250,
+            gravity: -0.4, // Stronger upward lift
+            drift: Math.random() * 0.4 - 0.2, // Subtle side-to-side sway
+            origin: { x: Math.random(), y: 1.1 }, // Spawns right below the screen bottom
+            colors: ['#ffffff', '#fff8dc', '#f4e04d', '#ffd700', '#e6c619'], // Bright whites, gold, champagne
             shapes: ['circle'],
-            scalar: Math.random() * 0.8 + 0.4, // Random bubble sizes
+            scalar: Math.random() * 1.2 + 0.6, // Larger, more noticeable bubble sizes
             zIndex: 9999
           });
-        }, 80);
+        }, 50); // Faster trigger rate
       });
     </script>
