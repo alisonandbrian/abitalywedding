@@ -209,8 +209,8 @@
             <h1>RSVP</h1>
 
             <!-- Replace "YOUR_FORMSPREE_ID" in the action attribute below -->
-            <form id="rsvpForm" action="https://formspree.io/f/mqpzgoqp" method="POST" onsubmit="handleRsvpSubmit(event)">
-                
+            <form id="rsvpForm" action="https://formspree.io/f/mqpzgoqp" method="POST" onsubmit="event.preventDefault(); handleRsvpSubmit(event);">
+
                 <!-- Name Field -->
                 <div class="form-group">
                     <label class="section-label" for="names">Name(s) of Guest(s):</label>
