@@ -209,7 +209,7 @@
             <h1>RSVP</h1>
 
             <!-- Replace "YOUR_FORMSPREE_ID" in the action attribute below -->
-            <form action="https://formspree.io/f/mqpzgoqp" method="POST">
+            <form id="rsvpForm" action="https://formspree.io/f/mqpzgoqp" method="POST" onsubmit="handleRsvpSubmit(event)">
                 
                 <!-- Name Field -->
                 <div class="form-group">
@@ -260,19 +260,35 @@
             </div>
         </div>
 
-        </div>
-
+        <!-- Image under RSVP form -->
+<div class="image-card" style="width: 100%; display: flex; justify-content: center; margin-top: 20px;">
+    <img src="images/Alison-and-brian-monogram.png" alt="Alison and Brian Illustration" style="display: block; margin: 0 auto; max-width: 100%; width: 500px; height: auto;">
+</div>
+            
         <!-- Back Link -->
         <div>
             <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
         </div>
         <script>
     function handleRsvpSubmit(e) {
-        e.preventDefault(); // Prevents page reload
+        e.preventDefault(); // Prevents Formspree redirect page
         
-        // Displays the Polaroid slide-up popup
-        const container = document.getElementById('polaroidContainer');
-        container.classList.add('active');
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            const container = document.getElementById('polaroidContainer');
+            container.classList.add('active');
+            form.reset();
+        }).catch(error => {
+            alert('There was a problem submitting your RSVP. Please try again!');
+        });
     }
 
     function closePolaroid() {
@@ -281,12 +297,5 @@
     }
 </script>
 
-<!-- Image under RSVP form -->
-<div class="image-card" style="width: 100%; display: flex; justify-content: center; margin-top: 20px;">
-    <img src="images/Alison-and-brian-monogram.png" alt="Alison and Brian Illustration" style="display: block; margin: 0 auto; max-width: 100%; width: 500px; height: auto;">
-</div>
-
-
-    </div>
 </body>
 </html>
