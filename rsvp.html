@@ -11,6 +11,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
+/* Polaroid Pop-up Overlay */
+.polaroid-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Wide Polaroid Card */
+.polaroid-card {
+    background: #ffffff;
+    padding: 16px 16px 24px 16px;
+    border-radius: 4px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 440px;
+    text-align: center;
+    transform: translateY(100vh);
+}
+
+/* Photo Styling */
+.polaroid-photo img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* Handwritten Style Caption */
+.polaroid-caption {
+    font-family: 'Georgia', cursive, serif;
+    font-size: 1.6rem;
+    color: #1a2b4c;
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+/* Slide Up Animation */
+.polaroid-overlay.active {
+    display: flex;
+}
+
+.polaroid-overlay.active .polaroid-card {
+    animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100vh) rotate(-3deg);
+    }
+    to {
+        transform: translateY(0) rotate(1deg);
+    }
+}
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -188,12 +250,36 @@
                 <button type="submit" class="btn-submit">Send RSVP</button>
 
             </form>
+        <!-- Polaroid Pop-up Container -->
+        <div id="polaroidContainer" class="polaroid-overlay" onclick="closePolaroid()">
+            <div class="polaroid-card">
+                <div class="polaroid-photo">
+                    <img src="images/us.jpg" alt="Alison and Brian">
+                </div>
+                <p class="polaroid-caption">See you there! ✨</p>
+            </div>
+        </div>
+
         </div>
 
         <!-- Back Link -->
         <div>
             <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
         </div>
+        <script>
+    function handleRsvpSubmit(e) {
+        e.preventDefault(); // Prevents page reload
+        
+        // Displays the Polaroid slide-up popup
+        const container = document.getElementById('polaroidContainer');
+        container.classList.add('active');
+    }
+
+    function closePolaroid() {
+        const container = document.getElementById('polaroidContainer');
+        container.classList.remove('active');
+    }
+</script>
 
 <!-- Image under RSVP form -->
 <div class="image-card" style="width: 100%; display: flex; justify-content: center; margin-top: 20px;">
