@@ -195,9 +195,11 @@
             const duration = Math.random() * 4 + 3;
             const delay = Math.pow(Math.random(), 2.5) * 5;
 
+            bubble.style.animationName = 'riseAndSway';
             bubble.style.animationDuration = `${duration}s`;
             bubble.style.animationDelay = `${delay}s`;
             bubble.style.animationIterationCount = '1';
+            bubble.style.animationFillMode = 'forwards';
 
             container.appendChild(bubble);
         }
