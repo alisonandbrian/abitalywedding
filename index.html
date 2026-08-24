@@ -198,7 +198,10 @@
 
             container.appendChild(bubble);
         }
-    }
+            setTimeout(() => {
+        container.innerHTML = '';
+    }, 7000);
+}
 
     document.addEventListener('DOMContentLoaded', createChampagneBubbles);
 </script>
