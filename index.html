@@ -97,14 +97,14 @@
     overflow: hidden;
 }
 
-/* Individual Champagne Bubbles */
+/* Individual Champagne Bubbles - Brighter & More Visible */
 .bubble {
     position: absolute;
-    bottom: -20px;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(244, 215, 122, 0.4) 60%, rgba(212, 175, 55, 0.1));
-    border: 1px solid rgba(255, 223, 128, 0.6);
+    bottom: -30px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #ffe066 60%, #ffd700);
+    border: 1px solid #e6b800;
     border-radius: 50%;
-    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), inset 0 0 6px #ffffff;
     opacity: 0;
     animation: riseAndSway linear infinite;
 }
@@ -115,18 +115,18 @@
         transform: translateY(0) translateX(0) scale(0.6);
         opacity: 0;
     }
-    10% {
-        opacity: 0.8;
+    15% {
+        opacity: 0.95;
     }
     50% {
-        transform: translateY(-50vh) translateX(15px) scale(1);
+        transform: translateY(-50vh) translateX(25px) scale(1.1);
         opacity: 0.9;
     }
-    90% {
-        opacity: 0.7;
+    85% {
+        opacity: 0.85;
     }
     100% {
-        transform: translateY(-105vh) translateX(-15px) scale(1.1);
+        transform: translateY(-105vh) translateX(-25px) scale(1.3);
         opacity: 0;
     }
 }
@@ -173,25 +173,26 @@
     </div>
     
     <script>
+    <script>
     function createChampagneBubbles() {
         const container = document.getElementById('bubble-container');
-        const bubbleCount = 45; // Total number of active bubbles
+        const bubbleCount = 120; // Increased count for many more bubbles
 
         for (let i = 0; i < bubbleCount; i++) {
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
 
-            // Vary bubble sizes (4px to 14px)
-            const size = Math.random() * 10 + 4;
+            // Larger size range (8px to 22px)
+            const size = Math.random() * 14 + 8;
             bubble.style.width = `${size}px`;
             bubble.style.height = `${size}px`;
 
-            // Random horizontal start position
+            // Spread horizontally across the screen
             bubble.style.left = `${Math.random() * 100}%`;
 
-            // Randomize speed (4s to 9s) & delay so they stream continuously
-            const duration = Math.random() * 5 + 4;
-            const delay = Math.random() * 6;
+            // Faster speed (3s to 7s) and staggered start delay
+            const duration = Math.random() * 4 + 3;
+            const delay = Math.random() * 7;
 
             bubble.style.animationDuration = `${duration}s`;
             bubble.style.animationDelay = `${delay}s`;
@@ -200,7 +201,6 @@
         }
     }
 
-    // Initialize bubbles on load
     document.addEventListener('DOMContentLoaded', createChampagneBubbles);
 </script>
 </body>
