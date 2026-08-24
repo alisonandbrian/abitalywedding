@@ -85,9 +85,56 @@
         .btn-primary {
             background-color: #3b5278;
         }
+/* Container to hold rising bubbles */
+#bubble-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Individual Champagne Bubbles */
+.bubble {
+    position: absolute;
+    bottom: -20px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(244, 215, 122, 0.4) 60%, rgba(212, 175, 55, 0.1));
+    border: 1px solid rgba(255, 223, 128, 0.6);
+    border-radius: 50%;
+    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 215, 0, 0.3);
+    opacity: 0;
+    animation: riseAndSway linear infinite;
+}
+
+/* Keyframe for upward floating + gentle sway */
+@keyframes riseAndSway {
+    0% {
+        transform: translateY(0) translateX(0) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-50vh) translateX(15px) scale(1);
+        opacity: 0.9;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-105vh) translateX(-15px) scale(1.1);
+        opacity: 0;
+    }
+}
+
     </style>
 </head>
 <body>
+<div id="bubble-container"></div>
 
     <div class="container">
         <!-- Main Announcement Section -->
@@ -125,41 +172,37 @@
         </section>
     </div>
     
-    <!-- Load Confetti / Bubble JS Library (Ensure this is still present) -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+    function createChampagneBubbles() {
+        const container = document.getElementById('bubble-container');
+        const bubbleCount = 45; // Total number of active bubbles
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // 1. Extend duration slightly so the bubbles have time to float all the way up.
-    var duration = 6 * 1000; // Plays for 6 seconds
-    var animationEnd = Date.now() + duration;
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
 
-    // 2. We use a faster interval to keep the screen full.
-    var interval = setInterval(function() {
-      var timeLeft = animationEnd - Date.now();
+            // Vary bubble sizes (4px to 14px)
+            const size = Math.random() * 10 + 4;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
 
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
+            // Random horizontal start position
+            bubble.style.left = `${Math.random() * 100}%`;
 
-      // We maintain a steady, high particle count so the screen is always filled.
-      // (This is the change that prevents them from thinning out too early.)
-      var steadyParticleCount = 10; 
+            // Randomize speed (4s to 9s) & delay so they stream continuously
+            const duration = Math.random() * 5 + 4;
+            const delay = Math.random() * 6;
 
-      // Launch floating champagne bubbles upward from the bottom
-      confetti({
-        particleCount: steadyParticleCount, // Steady flow to fill the screen
-        startVelocity: Math.random() * 20 + 10, // Faster launch
-        // 3. 'ticks' must be high enough so the bubbles don't disappear on tall screens.
-        ticks: 500, // HIGH TICKS ensures they reach the very top.
-        gravity: -0.25, // Stronger negative gravity floats them UP faster.
-        origin: { x: Math.random(), y: 1.1 }, // Spawn along the bottom edge, slightly off-screen
-        colors: ['#ffffff', '#f4e04d', '#ffd700', '#fceabb'], // White, Gold, and Champagne tones
-        shapes: ['circle'],
-        // 4. Large scalar range makes bubbles clearly visible at the top.
-        scalar: Math.random() * 1.5 + 0.5, // Random large bubble sizes
-        zIndex: 9999
-      });
-    }, 70); // Slightly faster launch rate
-  });
+            bubble.style.animationDuration = `${duration}s`;
+            bubble.style.animationDelay = `${delay}s`;
+
+            container.appendChild(bubble);
+        }
+    }
+
+    // Initialize bubbles on load
+    document.addEventListener('DOMContentLoaded', createChampagneBubbles);
 </script>
+</body>
+</html>
+    
