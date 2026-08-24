@@ -175,40 +175,49 @@
     </div>
     
     <script>
-    function createChampagneBubbles() {
-        const container = document.getElementById('bubble-container');
-        const bubbleCount = 120; // Increased count for many more bubbles
+    function createSingleBubble(container) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
 
-        for (let i = 0; i < bubbleCount; i++) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
+    // Larger size range (8px to 22px)
+    const size = Math.random() * 14 + 8;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
 
-            // Larger size range (8px to 22px)
-            const size = Math.random() * 14 + 8;
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
+    // Spread horizontally across the screen
+    bubble.style.left = `${Math.random() * 100}%`;
 
-            // Spread horizontally across the screen
-            bubble.style.left = `${Math.random() * 100}%`;
+    // Faster speed (3s to 7s) and staggered start delay
+    const duration = Math.random() * 4 + 3;
+    const delay = Math.random() * 7;
 
-            // Faster speed (3s to 7s) and staggered start delay
-            const duration = Math.random() * 4 + 3;
-            const delay = Math.pow(Math.random(), 2.5) * 5;
+    bubble.style.animationDuration = `${duration}s`;
+    bubble.style.animationDelay = `${delay}s`;
 
-            bubble.style.animationName = 'riseAndSway';
-            bubble.style.animationDuration = `${duration}s`;
-            bubble.style.animationDelay = `${delay}s`;
-            bubble.style.animationIterationCount = '1';
-            bubble.style.animationFillMode = 'forwards';
+    container.appendChild(bubble);
 
-            container.appendChild(bubble);
-        }
-            setTimeout(() => {
-        container.innerHTML = '';
-    }, 7000);
+    // Remove individual bubble once its float animation finishes
+    bubble.addEventListener('animationend', () => {
+        bubble.remove();
+    });
 }
 
-    document.addEventListener('DOMContentLoaded', createChampagneBubbles);
+function createChampagneBubbles() {
+    const container = document.getElementById('bubble-container');
+    if (!container) return;
+
+    // Initial batch so the screen fills up immediately
+    for (let i = 0; i < 25; i++) {
+        createSingleBubble(container);
+    }
+
+    // Keep generating new bubbles continuously
+    setInterval(() => {
+        createSingleBubble(container);
+    }, 400);
+}
+
+document.addEventListener('DOMContentLoaded', createChampagneBubbles);
 </script>
 </body>
 </html>
