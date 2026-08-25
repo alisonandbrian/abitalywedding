@@ -50,21 +50,21 @@
             margin-bottom: 15px;
             color: #1a2b4c;
         }
-      .video-wrapper {
+.video-wrapper {
     position: relative;
     width: 100%;
-    height: 220px; /* Reduces container height so no dark space sits below */
+    padding-top: 56.25%; /* Fixed 16:9 widescreen ratio */
     border-radius: 8px;
     overflow: hidden;
     background: #000000;
 }
 
-      .video-wrapper iframe {
+.video-wrapper iframe {
     position: absolute;
-    top: -18%; /* Pulls the video up to hide top black bar */
-    left: -10%; /* Stretches left to hide side margins */
-    width: 120%; /* Expands iframe past container bounds */
-    height: 136%; /* Expands height to fill card completely */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     border: 0;
 }
   
@@ -96,7 +96,8 @@
                 <h3>Engagement Party Video</h3>
                 <div class="video-wrapper">
                     <!-- Replace YOUR_FILE_ID with your Google Drive file ID -->
-                    <iframe src="https://drive.google.com/file/d/1Z85WIkUFkVEuNLVfEFew2rFio2Ubsulc/preview" allow="autoplay" allowfullscreen></iframe>
+                    <iframe src="https://drive.google.com/file/d/1Z85WIkUFkVEuNLVfEFew2rFio2Ubsulc/preview" 
+                allow="autoplay" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
