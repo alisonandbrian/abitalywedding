@@ -58,17 +58,17 @@
     overflow: hidden;
     background: #000000;
 }
-        .video-wrapper iframe {
+      .video-wrapper iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: 0;
-    transform: scale(1.35);
-    transform-origin: center center;
+    transform: scale(1.18); /* Lower scale so video isn't cropped away */
+    transform-origin: center 75%; /* Shifts zoom point down to focus on video content */
 }
-        
+  
         .btn-back {
             display: inline-block;
             color: #1a2b4c;
