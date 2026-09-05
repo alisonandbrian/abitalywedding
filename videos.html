@@ -38,34 +38,31 @@
             gap: 30px;
             margin-bottom: 40px;
         }
-        .video-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(26, 43, 76, 0.08);
-            border: 1px solid #e2ded4;
-        }
+   .video-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(26, 43, 76, 0.08);
+  border: 1px solid #e2ded4;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+}
+
+.video-card.tiktok-card {
+  max-width: 320px;
+}
+
         .video-card h3 {
             font-size: 1.2rem;
             margin-bottom: 15px;
             color: #1a2b4c;
         }
-.video-wrapper {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* Fixed 16:9 widescreen ratio */
-    border-radius: 8px;
-    overflow: hidden;
-    background: #000000;
-}
-
-.video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
+.video-player {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  background-color: #000;
 }
   
         .btn-back {
@@ -115,25 +112,24 @@
         <h1>That A&B Party</h1>
         <p class="subtitle">The prelude in Madison, Wisconsin</p>
 
-        <div class="video-stack">
-            <div class="video-card">
-                <h3>Engagement Party Video</h3>
-                <div class="video-wrapper">
-                    <!-- Replace YOUR_FILE_ID with your Google Drive file ID -->
-                    <iframe src="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTplcgiaGzqc9zaJ/preview" 
-                allow="autoplay" allowfullscreen></iframe>
-                </div>
-            </div>
-            
-      <!-- New TikTok / Vertical 9:16 Video Card -->
+          <div class="video-stack">
+      <!-- Top Horizontal Video Card -->
       <div class="video-card">
+        <h3>Engagement Party Video</h3>
+        <div class="video-wrapper">
+          <iframe src="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTplcgiaGzqc9zaJ/preview" allow="autoplay" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <!-- Bottom TikTok / Vertical Video Card -->
+      <div class="video-card tiktok-card">
         <h3>Save our Date</h3>
         <div class="video-wrapper tiktok-style">
-          <!-- Replace YOUR_FILE_ID_HERE with the Google Drive File ID of your TikTok video -->
           <iframe src="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_OJZ/preview" allow="autoplay" allowfullscreen></iframe>
         </div>
       </div>
     </div>
+
 
         <div>
             <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
