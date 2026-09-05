@@ -6,7 +6,11 @@
     <title>Videos - Alison & Brian</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f7f5f0;
@@ -38,16 +42,36 @@
             gap: 30px;
             margin-bottom: 40px;
         }
-  .video-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(26, 43, 76, 0.08);
-  border: 1px solid #e2ded4;
-  max-width: 700px;
-  margin: 0 auto 30px auto;
-}
-  
+        .video-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(26, 43, 76, 0.08);
+            border: 1px solid #e2ded4;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .video-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
         .btn-back {
             display: inline-block;
             color: #1a2b4c;
@@ -63,24 +87,7 @@
             background-color: #1a2b4c;
             color: #ffffff;
         }
-  .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* Default 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-  }
-
-  .video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-</style>
-
+    </style>
 </head>
 <body>
 
@@ -88,32 +95,28 @@
         <h1>That A&B Party</h1>
         <p class="subtitle">The prelude in Madison, Wisconsin</p>
 
-   <div class="container">
-  <h1>That A&B Party</h1>
-  <p class="subtitle">The prelude in Madison, Wisconsin</p>
+        <div class="video-stack">
+            <!-- First Video Card -->
+            <div class="video-card">
+                <h3>Engagement Party Video</h3>
+                <div class="video-wrapper">
+                    <iframe src="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTPlcgiagZqc9zaJ/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+            </div>
 
-  <div class="video-stack">
-    <!-- First Video Card -->
-    <div class="video-card">
-      <h3>Engagement Party Video</h3>
-      <div class="video-wrapper">
-        <iframe src="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTPlcgiagZqc9zaJ/preview" allow="autoplay" allowfullscreen></iframe>
-      </div>
+            <!-- Second Video Card -->
+            <div class="video-card">
+                <h3>Save our Date</h3>
+                <div class="video-wrapper">
+                    <iframe src="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_0JZ/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
+        </div>
     </div>
-
-    <!-- Second Video Card -->
-    <div class="video-card">
-      <h3>Save our Date</h3>
-      <div class="video-wrapper">
-        <iframe src="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_0JZ/preview" allow="autoplay" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <a href="index.html" class="btn-back">&larr; Back to Main Page</a>
-  </div>
-</div>
 
 </body>
 </html>
