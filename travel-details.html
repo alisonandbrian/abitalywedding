@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel & Accommodation Details - Alison & Brian</title>
+    <title>Travel Details - Alison & Brian</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
@@ -66,10 +66,7 @@
             letter-spacing: 0.5px;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="date"],
-        textarea {
+        input[type="text"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
@@ -128,6 +125,7 @@
             padding: 10px 12px;
             border-bottom: 1px solid #eee;
             text-align: left;
+            vertical-align: top;
         }
 
         .manifest-table th {
@@ -148,8 +146,8 @@
 
     <div class="container">
         <div class="card">
-            <h1>Travel & Stay Details</h1>
-            <p class="subtitle">Please share your flight & accommodation info so we can help coordinate!</p>
+            <h1>Travel Details</h1>
+            <p class="subtitle">Please share your flight information so we can help coordinate!</p>
 
             <form id="travelForm" action="https://formspree.io/f/mqpzgoqp" method="POST">
                 
@@ -158,63 +156,52 @@
                     <input type="text" id="names" name="Guest Names" placeholder="e.g. Jane & John Doe" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="Email" placeholder="your@email.com" required>
-                </div>
-
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
 
-                <!-- FLIGHT INFORMATION -->
+                <!-- ARRIVAL FLIGHT INFORMATION -->
                 <div class="form-group">
-                    <label for="arrival-date">Arrival Date & Time</label>
+                    <label for="arrival-flights">Arrival Flight(s) & Airline</label>
+                    <input type="text" id="arrival-flights" name="Arrival Flights" placeholder="e.g. DL123 (JFK to FCO), DL456 (FCO to PSA)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="arrival-date">Final Arrival Date & Time</label>
                     <input type="text" id="arrival-date" name="Arrival Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="flight-num">Arrival Flight # / Airline</label>
-                    <input type="text" id="flight-num" name="Flight Number" placeholder="e.g. Delta DL123" required>
-                </div>
-
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
 
-                <!-- ACCOMMODATION INFORMATION -->
+                <!-- RETURN FLIGHT INFORMATION -->
                 <div class="form-group">
-                    <label for="stay-location">Where are you staying?</label>
-                    <input type="text" id="stay-location" name="Accommodation" placeholder="e.g. Villa Lenka, Albergo Villa Marta, Airbnb in Lucca" required>
+                    <label for="return-flights">Return Flight(s) & Airline</label>
+                    <input type="text" id="return-flights" name="Return Flights" placeholder="e.g. UA789 (PSA to FRA), UA101 (FRA to EWR)" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="notes">Additional Notes / Departure Details</label>
-                    <textarea id="notes" name="Notes" rows="4" placeholder="Let us know if you need help sharing a taxi, departure flight details, or anything else!"></textarea>
+                    <label for="return-date">Return Departure Date & Time</label>
+                    <input type="text" id="return-date" name="Return Details" placeholder="e.g. Oct 20 at 10:15 AM (Pisa Airport)" required>
                 </div>
 
-                <button type="submit" class="btn-submit">Submit Details</button>
+                <button type="submit" class="btn-submit">Submit Flight Details</button>
             </form>
         </div>
 
         <!-- SHARED MANIFEST RESULTS -->
         <div class="card">
-            <h2>Guest Travel Manifest</h2>
-            <p class="subtitle" style="margin-bottom: 15px;">Check who is arriving on your flight or staying nearby!</p>
+            <h2>Guest Flight Manifest</h2>
+            <p class="subtitle" style="margin-bottom: 15px;">Check who is taking similar connecting flights or traveling on the same dates!</p>
 
             <div class="table-container">
                 <table class="manifest-table" id="manifestTable">
                     <thead>
                         <tr>
                             <th>Guest(s)</th>
-                            <th>Flight #</th>
-                            <th>Arrival</th>
-                            <th>Accommodation</th>
+                            <th>Arrival Flight(s) & Date</th>
+                            <th>Return Flight(s) & Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Alison & Brian</td>
-                            <td>DL 1842</td>
-                            <td>Oct 12 @ 2:15 PM</td>
-                            <td>Villa Lenka</td>
-                        </tr>
+                        <!-- Guest entries will populate here dynamically upon submission -->
                     </tbody>
                 </table>
             </div>
@@ -225,23 +212,18 @@
 
     <script>
         document.getElementById('travelForm').addEventListener('submit', function(e) {
-            // Read field values
             const names = document.getElementById('names').value;
-            const flight = document.getElementById('flight-num').value;
-            const arrival = document.getElementById('arrival-date').value;
-            const stay = document.getElementById('stay-location').value;
+            const arrFlights = document.getElementById('arrival-flights').value;
+            const arrivalDate = document.getElementById('arrival-date').value;
+            const retFlights = document.getElementById('return-flights').value;
+            const returnDate = document.getElementById('return-date').value;
 
-            // Append a new row to the table
             const tbody = document.getElementById('manifestTable').getElementsByTagName('tbody')[0];
             const newRow = tbody.insertRow();
 
             newRow.insertCell(0).textContent = names;
-            newRow.insertCell(1).textContent = flight;
-            newRow.insertCell(2).textContent = arrival;
-            newRow.insertCell(3).textContent = stay;
-
-            // Optional: submit to Formspree asynchronously using fetch if desired,
-            // or let standard submit take place.
+            newRow.insertCell(1).innerHTML = `${arrFlights}<br><small style="color: #666;">${arrivalDate}</small>`;
+            newRow.insertCell(2).innerHTML = `${retFlights}<br><small style="color: #666;">${returnDate}</small>`;
         });
     </script>
 
