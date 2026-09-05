@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 650px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -39,7 +39,7 @@
             text-align: left;
         }
 
-        h1 {
+        h1, h2 {
             font-size: 1.5rem;
             margin-bottom: 10px;
             text-align: center;
@@ -109,6 +109,39 @@
             text-transform: uppercase;
             font-weight: 500;
         }
+
+        /* Manifest Table Styles */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .manifest-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .manifest-table th, 
+        .manifest-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        .manifest-table th {
+            background-color: #f7f5f0;
+            color: #1a2b4c;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .manifest-table tr:hover {
+            background-color: #faf8f5;
+        }
     </style>
 </head>
 <body>
@@ -118,8 +151,7 @@
             <h1>Travel & Stay Details</h1>
             <p class="subtitle">Please share your flight & accommodation info so we can help coordinate!</p>
 
-            <!-- REPLACE THE 'action' URL BELOW WITH YOUR FORMSPREE FORM LINK -->
-            <form action=“https://formspree.io/f/mqpzgoqp" method="POST">
+            <form id="travelForm" action="https://formspree.io/f/mqpzgoqp" method="POST">
                 
                 <div class="form-group">
                     <label for="names">Guest Name(s)</label>
@@ -136,12 +168,12 @@
                 <!-- FLIGHT INFORMATION -->
                 <div class="form-group">
                     <label for="arrival-date">Arrival Date & Time</label>
-                    <input type="text" id="arrival-date" name="Arrival Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)">
+                    <input type="text" id="arrival-date" name="Arrival Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)" required>
                 </div>
 
                 <div class="form-group">
                     <label for="flight-num">Arrival Flight # / Airline</label>
-                    <input type="text" id="flight-num" name="Flight Number" placeholder="e.g. Delta DL123">
+                    <input type="text" id="flight-num" name="Flight Number" placeholder="e.g. Delta DL123" required>
                 </div>
 
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
@@ -149,7 +181,7 @@
                 <!-- ACCOMMODATION INFORMATION -->
                 <div class="form-group">
                     <label for="stay-location">Where are you staying?</label>
-                    <input type="text" id="stay-location" name="Accommodation" placeholder="e.g. Villa Lenka, Albergo Villa Marta, Airbnb in Lucca">
+                    <input type="text" id="stay-location" name="Accommodation" placeholder="e.g. Villa Lenka, Albergo Villa Marta, Airbnb in Lucca" required>
                 </div>
 
                 <div class="form-group">
@@ -161,8 +193,57 @@
             </form>
         </div>
 
+        <!-- SHARED MANIFEST RESULTS -->
+        <div class="card">
+            <h2>Guest Travel Manifest</h2>
+            <p class="subtitle" style="margin-bottom: 15px;">Check who is arriving on your flight or staying nearby!</p>
+
+            <div class="table-container">
+                <table class="manifest-table" id="manifestTable">
+                    <thead>
+                        <tr>
+                            <th>Guest(s)</th>
+                            <th>Flight #</th>
+                            <th>Arrival</th>
+                            <th>Accommodation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alison & Brian</td>
+                            <td>DL 1842</td>
+                            <td>Oct 12 @ 2:15 PM</td>
+                            <td>Villa Lenka</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <a href="index.html" class="btn-back">← Back to Main Page</a>
     </div>
+
+    <script>
+        document.getElementById('travelForm').addEventListener('submit', function(e) {
+            // Read field values
+            const names = document.getElementById('names').value;
+            const flight = document.getElementById('flight-num').value;
+            const arrival = document.getElementById('arrival-date').value;
+            const stay = document.getElementById('stay-location').value;
+
+            // Append a new row to the table
+            const tbody = document.getElementById('manifestTable').getElementsByTagName('tbody')[0];
+            const newRow = tbody.insertRow();
+
+            newRow.insertCell(0).textContent = names;
+            newRow.insertCell(1).textContent = flight;
+            newRow.insertCell(2).textContent = arrival;
+            newRow.insertCell(3).textContent = stay;
+
+            // Optional: submit to Formspree asynchronously using fetch if desired,
+            // or let standard submit take place.
+        });
+    </script>
 
 </body>
 </html>
