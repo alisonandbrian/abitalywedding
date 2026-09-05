@@ -100,11 +100,12 @@
   }
 
   /* TikTok / Vertical 9:16 Aspect Ratio Styling */
-  .video-wrapper.tiktok-style {
-    padding-bottom: 177.78%; /* 9:16 aspect ratio */
-    max-width: 360px;        /* Prevents it from being overly large on wide screens */
-    margin: 0 auto;          /* Keeps it centered inside the video card */
-  }
+.video-wrapper.tiktok-style {
+  padding-bottom: 125%;   /* Reduced from 177.78% to eliminate black vertical bars */
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 </style>
 
 </head>
@@ -126,7 +127,7 @@
             
       <!-- New TikTok / Vertical 9:16 Video Card -->
       <div class="video-card">
-        <h3>TikTok Video</h3>
+        <h3>Save our Date</h3>
         <div class="video-wrapper tiktok-style">
           <!-- Replace YOUR_FILE_ID_HERE with the Google Drive File ID of your TikTok video -->
           <iframe src="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_OJZ/preview" allow="autoplay" allowfullscreen></iframe>
