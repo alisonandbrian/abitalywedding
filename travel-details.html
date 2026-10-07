@@ -66,13 +66,14 @@
             letter-spacing: 0.5px;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-family: 'Montserrat', sans-serif;
             font-size: 0.95rem;
+            background-color: #fff;
         }
 
         .btn-submit {
@@ -147,7 +148,7 @@
     <div class="container">
         <div class="card">
             <h1>Travel Details</h1>
-            <p class="subtitle">Please share your flight information so we can help coordinate!</p>
+            <p class="subtitle">Please share your travel information so we can help coordinate!</p>
 
             <form id="travelForm" action="https://formspree.io/f/mqpzgoqp" method="POST">
                 
@@ -158,46 +159,64 @@
 
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
 
-                <!-- ARRIVAL FLIGHT INFORMATION -->
+                <!-- ARRIVAL TRANSPORTATION -->
                 <div class="form-group">
-                    <label for="arrival-flights">Arrival Flight(s) & Airline</label>
-                    <input type="text" id="arrival-flights" name="Arrival Flights" placeholder="e.g. DL123 (JFK to FCO), DL456 (FCO to PSA)" required>
+                    <label for="arrival-mode">Arrival Mode</label>
+                    <select id="arrival-mode" name="Arrival Mode" onchange="toggleFields('arrival')">
+                        <option value="flight">Flight</option>
+                        <option value="train">Train</option>
+                        <option value="car">Car / Driving</option>
+                    </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="arrival-date">Final Arrival Date & Time</label>
-                    <input type="text" id="arrival-date" name="Arrival Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)" required>
+                <div class="form-group" id="arrival-info-group">
+                    <label for="arrival-info" id="arrival-info-label">Arrival Flight(s) & Airline</label>
+                    <input type="text" id="arrival-info" name="Arrival Info" placeholder="e.g. DL123 (JFK to FCO), DL456 (FCO to PSA)" required>
+                </div>
+
+                <div class="form-group" id="arrival-time-group">
+                    <label for="arrival-date" id="arrival-date-label">Final Arrival Date & Time</label>
+                    <input type="text" id="arrival-date" name="Arrival Time Details" placeholder="e.g. Oct 13 at 2:30 PM (Pisa Airport)" required>
                 </div>
 
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
 
-                <!-- RETURN FLIGHT INFORMATION -->
+                <!-- DEPARTURE TRANSPORTATION -->
                 <div class="form-group">
-                    <label for="return-flights">Return Flight(s) & Airline</label>
-                    <input type="text" id="return-flights" name="Return Flights" placeholder="e.g. UA789 (PSA to FRA), UA101 (FRA to EWR)" required>
+                    <label for="return-mode">Departure Mode</label>
+                    <select id="return-mode" name="Return Mode" onchange="toggleFields('return')">
+                        <option value="flight">Flight</option>
+                        <option value="train">Train</option>
+                        <option value="car">Car / Driving</option>
+                    </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="return-date">Return Departure Date & Time</label>
-                    <input type="text" id="return-date" name="Return Details" placeholder="e.g. Oct 20 at 10:15 AM (Pisa Airport)" required>
+                <div class="form-group" id="return-info-group">
+                    <label for="return-info" id="return-info-label">Return Flight(s) & Airline</label>
+                    <input type="text" id="return-info" name="Return Info" placeholder="e.g. UA789 (PSA to FRA), UA101 (FRA to EWR)" required>
                 </div>
 
-                <button type="submit" class="btn-submit">Submit Flight Details</button>
+                <div class="form-group" id="return-time-group">
+                    <label for="return-date" id="return-date-label">Return Departure Date & Time</label>
+                    <input type="text" id="return-date" name="Return Time Details" placeholder="e.g. Oct 20 at 10:15 AM (Pisa Airport)" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Travel Details</button>
             </form>
         </div>
 
         <!-- SHARED MANIFEST RESULTS -->
         <div class="card">
-            <h2>Guest Flight Manifest</h2>
-            <p class="subtitle" style="margin-bottom: 15px;">Check who is taking similar connecting flights or traveling on the same dates!</p>
+            <h2>Guest Travel Manifest</h2>
+            <p class="subtitle" style="margin-bottom: 15px;">Check who is traveling around the same dates or taking similar routes!</p>
 
             <div class="table-container">
                 <table class="manifest-table" id="manifestTable">
                     <thead>
                         <tr>
                             <th>Guest(s)</th>
-                            <th>Arrival Flight(s) & Date</th>
-                            <th>Return Flight(s) & Date</th>
+                            <th>Arrival Details</th>
+                            <th>Departure Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -211,19 +230,89 @@
     </div>
 
     <script>
+        function toggleFields(type) {
+            const mode = document.getElementById(`${type}-mode`).value;
+            const infoGroup = document.getElementById(`${type}-info-group`);
+            const timeGroup = document.getElementById(`${type}-time-group`);
+            const infoInput = document.getElementById(`${type}-info`);
+            const timeInput = document.getElementById(`${type}-date`);
+            const infoLabel = document.getElementById(`${type}-info-label`);
+            const timeLabel = document.getElementById(`${type}-date-label`);
+
+            const isArrival = type === 'arrival';
+
+            if (mode === 'flight') {
+                infoGroup.style.display = 'block';
+                timeGroup.style.display = 'block';
+                infoInput.required = true;
+                timeInput.required = true;
+                
+                infoLabel.textContent = isArrival ? 'Arrival Flight(s) & Airline' : 'Return Flight(s) & Airline';
+                infoInput.placeholder = isArrival ? 'e.g. DL123 (JFK to FCO)' : 'e.g. UA789 (PSA to FRA)';
+                
+                timeLabel.textContent = isArrival ? 'Final Arrival Date & Time' : 'Return Departure Date & Time';
+                timeInput.placeholder = isArrival ? 'e.g. Oct 13 at 2:30 PM (Pisa Airport)' : 'e.g. Oct 20 at 10:15 AM (Pisa Airport)';
+            } 
+            else if (mode === 'train') {
+                infoGroup.style.display = 'block';
+                timeGroup.style.display = 'block';
+                infoInput.required = false;
+                timeInput.required = true;
+
+                infoLabel.textContent = isArrival ? 'Train Station / Route Details' : 'Departure Train Station / Route';
+                infoInput.placeholder = isArrival ? 'e.g. Frecciarossa from Rome' : 'e.g. Train to Florence Central';
+
+                timeLabel.textContent = isArrival ? 'Arrival Date & Station Arrival Time' : 'Departure Date & Station Time';
+                timeInput.placeholder = isArrival ? 'e.g. Oct 13 at 4:15 PM (Florence Santa Maria Novella)' : 'e.g. Oct 20 at 11:00 AM';
+            } 
+            else if (mode === 'car') {
+                infoGroup.style.display = 'none';
+                timeGroup.style.display = 'none';
+                infoInput.required = false;
+                timeInput.required = false;
+                infoInput.value = '';
+                timeInput.value = '';
+            }
+        }
+
         document.getElementById('travelForm').addEventListener('submit', function(e) {
             const names = document.getElementById('names').value;
-            const arrFlights = document.getElementById('arrival-flights').value;
-            const arrivalDate = document.getElementById('arrival-date').value;
-            const retFlights = document.getElementById('return-flights').value;
-            const returnDate = document.getElementById('return-date').value;
 
+            // Get Mode selections
+            const arrMode = document.getElementById('arrival-mode').value;
+            const retMode = document.getElementById('return-mode').value;
+
+            // Format Arrival string for Manifest
+            let arrText = `<strong>${arrMode.toUpperCase()}</strong>`;
+            if (arrMode === 'flight') {
+                arrText += `<br>${document.getElementById('arrival-info').value}<br><small style="color: #666;">${document.getElementById('arrival-date').value}</small>`;
+            } else if (arrMode === 'train') {
+                const info = document.getElementById('arrival-info').value;
+                if(info) arrText += `<br>${info}`;
+                arrText += `<br><small style="color: #666;">${document.getElementById('arrival-date').value}</small>`;
+            } else if (arrMode === 'car') {
+                arrText += `<br><small style="color: #666;">Driving / Rental Car</small>`;
+            }
+
+            // Format Departure string for Manifest
+            let retText = `<strong>${retMode.toUpperCase()}</strong>`;
+            if (retMode === 'flight') {
+                retText += `<br>${document.getElementById('return-info').value}<br><small style="color: #666;">${document.getElementById('return-date').value}</small>`;
+            } else if (retMode === 'train') {
+                const info = document.getElementById('return-info').value;
+                if(info) retText += `<br>${info}`;
+                retText += `<br><small style="color: #666;">${document.getElementById('return-date').value}</small>`;
+            } else if (retMode === 'car') {
+                retText += `<br><small style="color: #666;">Driving / Rental Car</small>`;
+            }
+
+            // Populate Manifest Table
             const tbody = document.getElementById('manifestTable').getElementsByTagName('tbody')[0];
             const newRow = tbody.insertRow();
 
             newRow.insertCell(0).textContent = names;
-            newRow.insertCell(1).innerHTML = `${arrFlights}<br><small style="color: #666;">${arrivalDate}</small>`;
-            newRow.insertCell(2).innerHTML = `${retFlights}<br><small style="color: #666;">${returnDate}</small>`;
+            newRow.insertCell(1).innerHTML = arrText;
+            newRow.insertCell(2).innerHTML = retText;
         });
     </script>
 
