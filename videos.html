@@ -16,7 +16,7 @@
             background-color: #f7f5f0;
             color: #1a2b4c;
             text-align: center;
-            padding: 40px 15px 80px 15px; /* Keeps extra bottom padding so mobile navigation bars won't clip content */
+            padding: 40px 15px 80px 15px;
             line-height: 1.6;
         }
         .container {
@@ -71,7 +71,20 @@
             border: 0;
             display: block;
         }
-
+        .video-fallback {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .video-fallback a {
+            color: #1a2b4c;
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .video-fallback a:hover {
+            color: #3b5278;
+        }
         .btn-back {
             display: inline-block;
             color: #1a2b4c;
@@ -103,6 +116,9 @@
                 <div class="video-wrapper">
                     <iframe src="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTplcgiaGzqc9zaJ/preview" allow="autoplay" allowfullscreen></iframe>
                 </div>
+                <p class="video-fallback">
+                    Just in case the video doesn't work, <a href="https://drive.google.com/file/d/17CeHaB6eYXV7d1fJRTplcgiaGzqc9zaJ/view" target="_blank" rel="noopener noreferrer">click this link to watch it in Google Drive</a>.
+                </p>
             </div>
 
             <!-- Second Video Card -->
@@ -111,6 +127,9 @@
                 <div class="video-wrapper">
                     <iframe src="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_OJZ/preview" allow="autoplay" allowfullscreen></iframe>
                 </div>
+                <p class="video-fallback">
+                    Just in case the video doesn't work, <a href="https://drive.google.com/file/d/1sZ_a4AIy0kiAokZjS51775V7oOB7_OJZ/view" target="_blank" rel="noopener noreferrer">click this link to watch it in Google Drive</a>.
+                </p>
             </div>
         </div>
 
