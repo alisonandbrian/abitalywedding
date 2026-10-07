@@ -27,7 +27,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
         }
 
@@ -54,89 +54,203 @@
             line-height: 1.7;
         }
 
-        /* Navigation Links Section */
-        .navigation-links {
+        /* Fixed Corner Menu Button */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            background-color: #1a2b4c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn:hover {
+            background-color: #3b5278;
+            transform: translateY(-2px);
+        }
+
+        /* Slide-out Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(26, 43, 76, 0.95);
+            z-index: 10000;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 350px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .menu-nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            transition: color 0.2s ease;
+        }
+
+        .menu-nav-links a:hover {
+            color: #ffe066;
+        }
+
+        /* 2-Column Navigation Grid */
+        .navigation-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            max-width: 400px;
+            max-width: 600px;
             margin: 30px auto 0 auto;
         }
 
         .btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: #1a2b4c;
             color: #ffffff;
-            padding: 14px 20px;
-            border-radius: 30px;
+            padding: 14px 16px;
+            border-radius: 25px;
             text-decoration: none;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             font-weight: 500;
             box-shadow: 0 4px 14px rgba(26, 43, 76, 0.15);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            text-align: center;
+            min-height: 54px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
+            background-color: #2c4166;
         }
 
         .btn-primary {
             background-color: #3b5278;
         }
-/* Container to hold rising bubbles */
-#bubble-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9999;
-    overflow: hidden;
-}
 
-/* Individual Champagne Bubbles - Brighter & More Visible */
-.bubble {
-    position: absolute;
-    bottom: -30px;
-    background: radial-gradient(circle at 30% 30%, #ffffff, #ffe066 60%, #ffd700);
-    border: 1px solid #e6b800;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), inset 0 0 6px #ffffff;
-    opacity: 0.9;
-    animation-name: riseAndSway;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
+        /* Mobile responsiveness for navigation grid */
+        @media (max-width: 500px) {
+            .navigation-links {
+                grid-template-columns: 1fr;
+            }
+        }
 
-/* Keyframe for upward floating + gentle sway */
-@keyframes riseAndSway {
-    0% {
-        transform: translateY(0) translateX(0) scale(0.6);
-        opacity: 0;
-    }
-    15% {
-        opacity: 0.95;
-    }
-    50% {
-        transform: translateY(-50vh) translateX(25px) scale(1.1);
-        opacity: 0.9;
-    }
-    85% {
-        opacity: 0.85;
-    }
-    100% {
-        transform: translateY(-105vh) translateX(-25px) scale(1.3);
-        opacity: 0;
-    }
-}
+        /* Container to hold rising bubbles */
+        #bubble-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
 
+        /* Individual Champagne Bubbles */
+        .bubble {
+            position: absolute;
+            bottom: -30px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #ffe066 60%, #ffd700);
+            border: 1px solid #e6b800;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), inset 0 0 6px #ffffff;
+            opacity: 0.9;
+            animation-name: riseAndSway;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes riseAndSway {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.6);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.95;
+            }
+            50% {
+                transform: translateY(-50vh) translateX(25px) scale(1.1);
+                opacity: 0.9;
+            }
+            85% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(-105vh) translateX(-25px) scale(1.3);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
-<div id="bubble-container"></div>
+    <div id="bubble-container"></div>
+
+    <!-- Fixed Menu Toggle Button -->
+    <button class="menu-btn" id="menuToggleBtn" onclick="toggleMenu()">
+        <span id="menuIcon">☰</span> <span id="menuText">Menu</span>
+    </button>
+
+    <!-- Overlay Navigation Menu -->
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="menu-nav-links">
+            <a href="rsvp.html" onclick="toggleMenu()">RSVP Here</a>
+            <a href="this-is-us.html" onclick="toggleMenu()">This Is Us</a>
+            <a href="thisisyall.html" onclick="toggleMenu()">This Is Y'all</a>
+            <a href="videos.html" onclick="toggleMenu()">Engagement Party Video</a>
+            <a href="location-info.html" onclick="toggleMenu()">General Inquiries About Stay</a>
+            <a href="dress-code.html" onclick="toggleMenu()">Dress Code &amp; Attire</a>
+            <a href="food-and-drinks.html" onclick="toggleMenu()">Food &amp; Drinks Info</a>
+            <a href="gifts.html" onclick="toggleMenu()">Gifts &amp; Registry</a>
+            <a href="pack-and-prepare.html" onclick="toggleMenu()">Pack &amp; Prepare</a>
+            <a href="travel-details.html" onclick="toggleMenu()">Submit Travel &amp; Flight Info</a>
+            <a href="italian-phrases.html" onclick="toggleMenu()">Italian Cheat Sheet</a>
+            <a href="frenchphrases.html" onclick="toggleMenu()">French Cheat Sheet</a>
+            <a href="bridal-party.html" onclick="toggleMenu()">Bridal Party Info</a>
+        </div>
+    </div>
 
     <div class="container">
         <!-- Main Announcement Section -->
@@ -155,7 +269,7 @@
             </div>
         </section>
 
-        <!-- Main Navigation & Links Section -->
+        <!-- Main Navigation & Links Section (2-Column Grid) -->
         <section class="navigation-links">
             <a href="rsvp.html" class="btn btn-primary">RSVP Here</a>
             <a href="this-is-us.html" class="btn">This Is Us</a>
@@ -169,58 +283,63 @@
             <a href="travel-details.html" class="btn">Submit Travel &amp; Flight Info</a>
             <a href="italian-phrases.html" class="btn">Italian Cheat Sheet</a>
             <a href="frenchphrases.html" class="btn">French Cheat Sheet</a>
-            <a href="bridal-party.html" class="btn">Bridal Party Info; password needed</a>
-
-
-
+            <a href="bridal-party.html" class="btn" style="grid-column: 1 / -1;">Bridal Party Info; password needed</a>
         </section>
     </div>
     
     <script>
-    function createSingleBubble(container) {
-    const bubble = document.createElement('div');
-    bubble.classList.add('bubble');
-
-    // Larger size range (8px to 22px)
-    const size = Math.random() * 14 + 8;
-    bubble.style.width = `${size}px`;
-    bubble.style.height = `${size}px`;
-
-    // Spread horizontally across the screen
-    bubble.style.left = `${Math.random() * 100}%`;
-
-    // Faster speed (3s to 7s) and staggered start delay
-    const duration = Math.random() * 4 + 3;
-    const delay = Math.random() * 7;
-
-    bubble.style.animationDuration = `${duration}s`;
-    bubble.style.animationDelay = `${delay}s`;
-
-    container.appendChild(bubble);
-
-    // Remove individual bubble once its float animation finishes
-    bubble.addEventListener('animationend', () => {
-        bubble.remove();
-    });
-}
-
-function createChampagneBubbles() {
-    const container = document.getElementById('bubble-container');
-    if (!container) return;
-
-    // Initial batch so the screen fills up immediately
-    for (let i = 0; i < 25; i++) {
-        createSingleBubble(container);
+    function toggleMenu() {
+        const overlay = document.getElementById('menuOverlay');
+        const icon = document.getElementById('menuIcon');
+        const text = document.getElementById('menuText');
+        
+        overlay.classList.toggle('active');
+        if (overlay.classList.contains('active')) {
+            icon.textContent = '✕';
+            text.textContent = 'Close';
+        } else {
+            icon.textContent = '☰';
+            text.textContent = 'Menu';
+        }
     }
 
-    // Keep generating new bubbles continuously
-    setInterval(() => {
-        createSingleBubble(container);
-    }, 400);
-}
+    function createSingleBubble(container) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
 
-document.addEventListener('DOMContentLoaded', createChampagneBubbles);
-</script>
+        const size = Math.random() * 14 + 8;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+
+        bubble.style.left = `${Math.random() * 100}%`;
+
+        const duration = Math.random() * 4 + 3;
+        const delay = Math.random() * 7;
+
+        bubble.style.animationDuration = `${duration}s`;
+        bubble.style.animationDelay = `${delay}s`;
+
+        container.appendChild(bubble);
+
+        bubble.addEventListener('animationend', () => {
+            bubble.remove();
+        });
+    }
+
+    function createChampagneBubbles() {
+        const container = document.getElementById('bubble-container');
+        if (!container) return;
+
+        for (let i = 0; i < 25; i++) {
+            createSingleBubble(container);
+        }
+
+        setInterval(() => {
+            createSingleBubble(container);
+        }, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', createChampagneBubbles);
+    </script>
 </body>
 </html>
-    
